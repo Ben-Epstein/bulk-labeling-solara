@@ -1,0 +1,8 @@
+solara
+pandas
+jupyter
+numpy
+plotly<=5.9.0
+sentence-transformers
+umap-learn
+numerize
