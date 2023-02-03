@@ -15,18 +15,13 @@ Any changes you make to the app should reflect in realtime
 
 ### Note: `SentenceTransformers` doesn't play nicely with solara
 If you are going to be developing, I strongly recommend commenting out
-the few lines in [ml.py](utils/ml.py)
-```
-from sentence_transformers import SentenceTransformer
-...
-ENCODER = SentenceTransformer("paraphrase-MiniLM-L3-v2")
-...
-return ENCODER.encode(samples)
-```
+the few lines in [ml.py](bulk_labeling/utils/ml.py):
+https://github.com/Ben-Epstein/bulk-labeling-solara/blob/8281f618c33e298a0bb5de373b0087a49d58e938/bulk_labeling/utils/ml.py#L5
+https://github.com/Ben-Epstein/bulk-labeling-solara/blob/8281f618c33e298a0bb5de373b0087a49d58e938/bulk_labeling/utils/ml.py#L9
+https://github.com/Ben-Epstein/bulk-labeling-solara/blob/8281f618c33e298a0bb5de373b0087a49d58e938/bulk_labeling/utils/ml.py#L13
+
 and uncomment
-```
-# return np.random.rand(len(samples), 20)
-```
+https://github.com/Ben-Epstein/bulk-labeling-solara/blob/8281f618c33e298a0bb5de373b0087a49d58e938/bulk_labeling/utils/ml.py#L15
 
 For some reason, on a page reload, solara breaks if these lines are running.  
 It will also make prototyping faster because you won't be actually encoding strings.
