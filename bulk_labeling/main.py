@@ -5,7 +5,7 @@ import solara
 
 from bulk_labeling.components.df import df_view, no_embs
 from bulk_labeling.components.menu import assigned_label_view, menu
-from bulk_labeling.state import PlotState, State
+from bulk_labeling.state import PlotState
 from bulk_labeling.utils.df import has_df
 
 
@@ -19,9 +19,8 @@ def no_df() -> None:
 @solara.component
 def Page() -> None:
     # TODO: Remove when solara updates
-    PlotState.loading.use()
-    State.filter_text.use()
-    State.filtered_ids.use()
+    # PlotState.loading.use()
+
     # This `eq` makes it so every time we set the dataframe, solara thinks it's new
     df, set_df = solara.use_state(
         cast(pd.DataFrame, pd.DataFrame({})), eq=lambda *args: False

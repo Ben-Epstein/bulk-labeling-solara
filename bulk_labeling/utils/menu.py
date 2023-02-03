@@ -6,7 +6,7 @@ import pandas as pd
 from bulk_labeling.state import State, reset
 from bulk_labeling.utils.df import filtered_df, has_df
 
-DIR = f"{os.getcwd()}/bulk-labeling"
+DIR = f"{os.getcwd()}/bulk_labeling"
 PATH = f"{DIR}/conv_intent.csv"
 
 
@@ -29,7 +29,8 @@ def assign_labels(df: pd.DataFrame) -> None:
     State.labeled_ids.set(labeled_ids)
     # State.assigned_new_label.set(True)
     # Reset the view so no points are selected
-    reset()
+    if State.reset_on_assignment.value:
+        reset()
 
 
 def get_assign_label_button_text(df: pd.DataFrame) -> Tuple[str, bool]:

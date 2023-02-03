@@ -25,13 +25,15 @@ NO_COLOR_COLS = INTERNAL_COLS + ["text"]
 @solara.component
 def assigned_label_view() -> None:
     State.assigned_new_label.use()
+    State.filtered_ids.use()
+
     if State.assigned_new_label.value:
         solara.Info(f"{len(State.filtered_ids.value)} labeled!")
         sleep(2)
         State.assigned_new_label.set(False)
 
 
-@solara.component()
+@solara.component
 def assign_label_button(df: pd.DataFrame) -> None:
     fdf = filtered_df(df)
     btn_label, button_enabled = get_assign_label_button_text(df)
@@ -43,8 +45,9 @@ def assign_label_button(df: pd.DataFrame) -> None:
     )
 
 
-@solara.component()
+@solara.component
 def register_new_label_button() -> None:
+    # TODO: Remove when solara updates
     State.available_labels.use()
     State.chosen_label.use()
 
@@ -56,8 +59,9 @@ def register_new_label_button() -> None:
         )
 
 
-@solara.component()
+@solara.component
 def export_edits_button(df: pd.DataFrame) -> None:
+    # TODO: Remove when solara updates
     State.labeled_ids.use()
 
     def export_edited_df() -> None:
@@ -76,22 +80,18 @@ def export_edits_button(df: pd.DataFrame) -> None:
         )
 
 
-@solara.component()
+@solara.component
 def label_manager(df: pd.DataFrame) -> None:
-    # TODO: Remove when solara updates
-    State.chosen_label.use()
-    State.filtered_ids.use()
-    State.filter_text.use()
-    State.labeled_ids.use()
-
-    # TODO: Make a State.available_labels.append
     register_new_label_button()
     assign_label_button(df)
     export_edits_button(df)
 
 
-@solara.component()
+@solara.component
 def file_manager(set_df: Callable) -> None:
+    PlotState.color.use()
+    PlotState.loading.use()
+
     def load_demo_df() -> None:
         new_df = load_df(PATH)
         set_df(new_df)
@@ -119,8 +119,13 @@ def file_manager(set_df: Callable) -> None:
         solara.Button(label="Reset view", on_click=reset, **BUTTON_KWARGS)
 
 
-@solara.component()
+@solara.component
 def view_controller(avl_cols: List[str]) -> None:
+    # TODO: Remove when solara updates
+    PlotState.color.use()
+    PlotState.point_size.use()
+    State.filter_text.use()
+
     solara.InputText(
         "Filter by search", State.filter_text.value, on_value=State.filter_text.set
     )
@@ -136,12 +141,9 @@ def view_controller(avl_cols: List[str]) -> None:
     )
 
 
-@solara.component()
+@solara.component
 def menu(df: pd.DataFrame, set_df: Callable) -> None:
-    # TODO: Remove when solara updates
-    PlotState.point_size.use()
-    PlotState.color.use()
-    State.filter_text.use()
+    State.reset_on_assignment.use()
 
     # avl_cols is dependent on df, so any time it changes,
     # this will automatically update
@@ -151,3 +153,15 @@ def menu(df: pd.DataFrame, set_df: Callable) -> None:
     file_manager(set_df)
     label_manager(df)
     view_controller(avl_cols)
+    solara.Markdown(f"**Reset view on label assignment?**")
+    if State.reset_on_assignment.value:
+        label = "Reset"
+    else:
+        label = "Keep state"
+    # solara.Checkbox(
+    #     label=label,
+    #     value=State.reset_on_assignment.value,
+    #     on_value=State.reset_on_assignment.set
+    # )
+    solara.Checkbox(label=label).connect(State.reset_on_assignment)
+    # solara.ToggleButtonsSingle(State.reset_on_assignment.value, values=[True, False], on_value=State.reset_on_assignment.set)
