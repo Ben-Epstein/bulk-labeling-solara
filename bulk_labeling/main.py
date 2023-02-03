@@ -1,7 +1,7 @@
 from typing import cast
 
 import pandas as pd
-import solara
+import solara as sl
 
 from bulk_labeling.components.df import df_view, no_embs
 from bulk_labeling.components.menu import assigned_label_view, menu
@@ -9,26 +9,26 @@ from bulk_labeling.state import PlotState
 from bulk_labeling.utils.df import has_df
 
 
-@solara.component
+@sl.component
 def no_df() -> None:
-    with solara.Columns([1, 1]):
-        solara.Markdown("## DataFrame (Load Data)")
-        solara.Markdown("## Embeddings (Load Data)")
+    with sl.Columns([1, 1]):
+        sl.Markdown("## DataFrame (Load Data)")
+        sl.Markdown("## Embeddings (Load Data)")
 
 
-@solara.component
+@sl.component
 def Page() -> None:
     # TODO: Remove when solara updates
     # PlotState.loading.use()
 
     # This `eq` makes it so every time we set the dataframe, solara thinks it's new
-    df, set_df = solara.use_state(
+    df, set_df = sl.use_state(
         cast(pd.DataFrame, pd.DataFrame({})), eq=lambda *args: False
     )
-    solara.Title("Bulk Labeling!")
+    sl.Title("Bulk Labeling!")
     # TODO: Why cant i get this view to render?
     assigned_label_view()
-    with solara.Sidebar():
+    with sl.Sidebar():
         menu(df, set_df)
     if has_df(df) and PlotState.loading.value:
         no_embs(df)
