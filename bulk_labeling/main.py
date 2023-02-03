@@ -17,7 +17,7 @@ def no_df() -> None:
 
 
 @solara.component
-def Page():
+def Page() -> None:
     # TODO: Remove when solara updates
     PlotState.loading.use()
     State.filter_text.use()

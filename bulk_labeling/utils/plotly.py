@@ -1,8 +1,8 @@
 from typing import Dict, List
 
+import pandas as pd
 import plotly.express as px
 from plotly.graph_objs._figure import Figure
-import pandas as pd
 
 
 def find_row_ids(fig: Figure, click_data: Dict) -> List[int]:

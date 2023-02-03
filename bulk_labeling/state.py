@@ -20,7 +20,7 @@ class PlotState:
     loading = Reactive[bool](False)
 
 
-def reset():
+def reset() -> None:
     """Removes any filters applied to the data"""
     State.filtered_ids.set([])
     State.filter_text.set("")

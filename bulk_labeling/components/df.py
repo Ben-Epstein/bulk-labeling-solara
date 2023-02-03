@@ -22,7 +22,7 @@ def no_embs(df: pd.DataFrame) -> None:
 
 
 @solara.component
-def embeddings(df: pd.DataFrame, color: str, point_size: int):
+def embeddings(df: pd.DataFrame, color: str, point_size: int) -> None:
     solara.Markdown("## Embeddings")
     fig = create_plotly_figure(df, color, point_size)
 
@@ -33,7 +33,7 @@ def embeddings(df: pd.DataFrame, color: str, point_size: int):
 
 
 @solara.component
-def table(df: pd.DataFrame):
+def table(df: pd.DataFrame) -> None:
     solara.Markdown(f"## Data ({len(df):,} points)")
     solara.DataFrame(df[[i for i in df.columns if i not in INTERNAL_COLS]])
 
