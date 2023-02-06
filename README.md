@@ -6,6 +6,19 @@ I'm trying to rebuild my original [bulk-labeling](https://github.com/rungalileo/
 I also want to learn how to use solara :) 
 
 
+## Roadmap
+- [ ] Fix the layout of embeddings and dataframe so they are next to each other (not stacked)<br>Also the solara message on the bottom right is in a bad spot <img width="750" height="400" alt="image" src="https://user-images.githubusercontent.com/22605641/216855251-c8f71922-3358-4383-9e2b-b8c73bfb4c41.png">
+
+- [ ] Get a more fun animation for when the embeddings are being calculated. Would also be cool if we could update them with the logs from UMAP or tqdm
+- [ ] Fix mypy issues <img width="1254" alt="image" src="https://user-images.githubusercontent.com/22605641/216855155-0477352c-9707-4588-849b-9d630dc72339.png">
+- [ ] The "reset filters" button should really be a switch, not a checkbox. It doesn't look great<br> <img width="288" alt="image" src="https://user-images.githubusercontent.com/22605641/216855320-bad0c6f3-07bf-4202-baba-512396e8b703.png">
+- [ ] Add a nice readme like what I have in the [streamlit version](https://github.com/rungalileo/bulk-labeling) - We should wait until the visual issues are fixed so we don't need to redo it 
+- [ ] Write the blog on how I built it (same as above, wait until it's in a better state)
+- [ ] Deploy on solara cloud?!? 🚀
+
+ 
+
+
 ## Development
 1. Setup a virtual env: `python -m venv .venv && source .venv/bin/activate`
 2. Install the package: `pip install -e . && pyenv rehash`
