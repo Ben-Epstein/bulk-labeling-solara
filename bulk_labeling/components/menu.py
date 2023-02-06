@@ -139,7 +139,7 @@ def menu(df: pd.DataFrame, set_df: Callable) -> None:
     file_manager(set_df)
     label_manager(df)
     view_controller(avl_cols)
-    sl.Markdown("**Reset view on label assignment?**")
+    sl.Markdown("**Reset filters on label assignment?**")
     if State.reset_on_assignment.value:
         label = "Reset"
     else:
