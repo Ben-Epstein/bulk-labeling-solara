@@ -1,10 +1,13 @@
+import io
 import os
-from typing import Tuple
+from typing import Callable, Tuple
 
 import pandas as pd
+from solara.components.file_drop import FileInfo
 
-from bulk_labeling.state import State, reset
-from bulk_labeling.utils.df import filtered_df, has_df
+from bulk_labeling.state import PlotState, State, reset
+from bulk_labeling.utils.df import filtered_df, has_df, load_df
+from bulk_labeling.utils.ml import add_embeddings_to_df
 
 DIR = f"{os.getcwd()}/bulk_labeling"
 PATH = f"{DIR}/conv_intent.csv"
@@ -47,3 +50,21 @@ def get_assign_label_button_text(df: pd.DataFrame) -> Tuple[str, bool]:
     else:
         btn_label = "Choose a label"
     return btn_label, button_enabled
+
+
+def load_demo_df(set_df: Callable) -> None:
+    new_df = load_df(PATH)
+    set_df(new_df)
+
+
+def load_file_df(file: FileInfo, set_df: Callable) -> None:
+    if not file["data"]:
+        return
+    new_df = load_df(io.BytesIO(file["data"]))
+    # Set it before embeddings so the user can see the df while embeddings load
+    PlotState.loading.set(True)
+    set_df(new_df)
+    new_df = add_embeddings_to_df(new_df)
+    # Set it again after embeddings so we can render the plotly graph
+    set_df(new_df)
+    PlotState.loading.set(False)

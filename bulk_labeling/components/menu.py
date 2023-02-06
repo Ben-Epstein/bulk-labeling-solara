@@ -1,4 +1,3 @@
-import io
 import itertools
 from functools import partial
 from time import sleep
@@ -6,18 +5,17 @@ from typing import Callable, List
 
 import pandas as pd
 import solara as sl
-from solara.components.file_drop import FileInfo
 
 from bulk_labeling.state import PlotState, State, reset
 from bulk_labeling.utils.common import BUTTON_KWARGS
-from bulk_labeling.utils.df import INTERNAL_COLS, apply_df_edits, filtered_df, load_df
+from bulk_labeling.utils.df import INTERNAL_COLS, apply_df_edits, filtered_df
 from bulk_labeling.utils.menu import (
-    PATH,
     add_new_label,
     assign_labels,
     get_assign_label_button_text,
+    load_demo_df,
+    load_file_df,
 )
-from bulk_labeling.utils.ml import add_embeddings_to_df
 
 NO_COLOR_COLS = INTERNAL_COLS + ["text"]
 
@@ -92,30 +90,18 @@ def file_manager(set_df: Callable) -> None:
     PlotState.color.use()
     PlotState.loading.use()
 
-    def load_demo_df() -> None:
-        new_df = load_df(PATH)
-        set_df(new_df)
-        set_df(new_df)
-
-    def load_file_df(file: FileInfo) -> None:
-        if not file["data"]:
-            return
-        new_df = load_df(io.BytesIO(file["data"]))
-        # Set it before embeddings so the user can see the df while embeddings load
-        PlotState.loading.set(True)
-        set_df(new_df)
-        new_df = add_embeddings_to_df(new_df)
-        # Set it again after embeddings so we can render the plotly graph
-        set_df(new_df)
-        PlotState.loading.set(False)
-
     sl.FileDrop(
         label="Drop CSV here (`text` col required)!",
-        on_file=load_file_df,
+        on_file=partial(load_file_df, set_df=set_df),
         lazy=False,
     )
+    # We use sl.Column to force these two buttons to be stacked instead of side-by-side
     with sl.Column():
-        sl.Button(label="Load demo dataset", on_click=load_demo_df, **BUTTON_KWARGS)
+        sl.Button(
+            label="Load demo dataset",
+            on_click=partial(load_demo_df, set_df),
+            **BUTTON_KWARGS,
+        )
         sl.Button(label="Reset view", on_click=reset, **BUTTON_KWARGS)
 
 
