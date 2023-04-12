@@ -1,3 +1,7 @@
+# Update
+This repo has been sunset. It has been moved to [Solara-Examples](https://github.com/Ben-Epstein/solara-examples/), in the [`bulk-labeling`](https://github.com/Ben-Epstein/solara-examples/tree/main/bulk-labeling) folder!
+
+
 # bulk-labeling-solara
 A tool for bulk labeling, built in Solara!
 
